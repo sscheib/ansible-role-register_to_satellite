@@ -1,0 +1,52 @@
+---
+- name: 'Include tasks to assert that all variables are defined properly'
+  ansible.builtin.include_tasks:
+    file: 'assert.yml'
+
+- name: 'Slurp {{ _rts_rhsm_conf_path }}'
+  ansible.builtin.slurp:
+    src: '{{ _rts_rhsm_conf_path }}'
+  become: true
+  register: '__t_rhsm_conf'
+  ignore_errors: true
+
+- name: 'Include tasks to register the system'
+  ansible.builtin.include_tasks:
+    file: 'register.yml'
+  # the task will be executed on the following conditions:
+  # - _rts_force_registration is defined and true
+  # - _rts_rhsm_conf_path did not exist
+  # - when the key [server][hostname] does not exist in _rts_rhsm_conf_path
+  # - when the value of [server][hostname] differs from the hostname retrieved via
+  #   _rts_katello_ca_consumer_url
+  when: >
+    (
+      _rts_force_registration is defined
+      and _rts_force_registration
+    )
+    or
+    (
+      __t_rhsm_conf.failed is defined
+      and __t_rhsm_conf.failed
+    )
+    or
+    (
+      'server' |
+        ansible.builtin.extract(
+          __t_rhsm_conf.content |
+          b64decode |
+          from_ini,
+          morekeys='hostname'
+        ) | default('')
+    ) == ''
+    or
+    (
+      'server' |
+        ansible.builtin.extract(
+          __t_rhsm_conf.content |
+          b64decode |
+          from_ini,
+          morekeys='hostname'
+        ) | default('')
+    ) != _rts_satellite_hostname
+...

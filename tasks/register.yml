@@ -1,0 +1,83 @@
+---
+- name: 'register | Handle system registration'
+  become: true
+  block:
+
+    - name: 'register | Unregister the system'
+      ansible.builtin.command:
+        cmd: 'subscription-manager remove --all'
+      changed_when: true
+
+    - name: 'register | Ensure subscription-manager removes all local data'
+      ansible.builtin.command:
+        cmd: 'subscription-manager clean'
+      changed_when: true
+
+    - name: 'register | Gather package facts'
+      ansible.builtin.package_facts:
+        manager: 'auto'
+        strategy: 'first'
+
+    - name: 'register | Ensure old Katello CA consumer packages are absent'
+      ansible.builtin.package:
+        name: >-
+          {{
+            ansible_facts.packages |
+            dict2items |
+            selectattr('key', 'match', _rts_katello_ca_consumer_regexp) |
+            map(attribute='key') |
+            list
+          }}
+        state: 'absent'
+      when: >
+        ansible_facts.packages |
+        dict2items |
+        selectattr('key', 'match', _rts_katello_ca_consumer_regexp) |
+        map(attribute='key') |
+        list | length > 0
+
+    - name: 'register | Install correct Katello CA consumer package'
+      ansible.builtin.package:
+        name: >-
+          {{
+            _rts_satellite_katello_ca_consumer_scheme ~ '://' ~
+            _rts_satellite_hostname ~ ':' ~
+            _rts_satellite_katello_ca_consumer_port ~ '/' ~
+            _rts_satellite_katello_ca_consumer_published_path ~ '/' ~
+            _rts_satellite_katello_ca_consumer_package_name
+          }}
+        state: 'present'
+        disable_gpg_check: true  # Katello CA Consumer package is not signed
+        disablerepo: '*'  # old repositories can cause issues, so temporarily disabling all
+        validate_certs: '{{ _rts_satellite_katello_ca_consumer_validate_certificates }}'
+
+    - name: 'register | Force registration of the system to Satellite/Capsule: {{ _rts_satellite_hostname }}'
+      community.general.redhat_subscription:
+        activationkey: '{{ _rts_satellite_activation_key }}'
+        server_hostname: '{{ _rts_satellite_hostname }}'
+        server_port: '{{ _rts_satellite_port }}'
+        server_insecure: >-  # basically negate _rts_satellite_validate_certificates
+          {{
+            false
+            if _rts_satellite_validate_certificates is defined
+            and _rts_satellite_validate_certificates
+            else
+              true
+              if _rts_satellite_validate_certificates is defined
+              and not _rts_satellite_validate_certificates
+              else
+              false
+          }}
+        org_id: '{{ _rts_satellite_organization_name }}'
+        force_register: true
+        state: 'present'
+
+    - name: 'register | Ensure subscription-manager registered properly'
+      ansible.builtin.command:
+        cmd: 'subscription-manager status'
+      changed_when: false
+
+    - name: 'register | Ensure the system is able to update the cache of the enabled repositories'
+      ansible.builtin.package:
+        update_cache: true
+...

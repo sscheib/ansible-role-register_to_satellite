@@ -1,0 +1,35 @@
+---
+# whether to force registration, even if the RHSM configuration file points to the correct Satellite/Capsule
+_def_rts_force_registration: false
+
+# regular expression to find existing katello-ca-consumer packages
+_def_rts_katello_ca_consumer_regexp: '^katello-ca-consumer-'
+
+# whether to quiet assert statements
+_def_rts_quiet_assert: false
+
+# path to the RHSM configuration file
+_def_rts_rhsm_conf_path: '/etc/rhsm/rhsm.conf'
+
+# package name of katello-ca-consumer - required for retrieving the RPM from the Satellite
+_def_rts_satellite_katello_ca_consumer_package_name: 'katello-ca-consumer-latest.noarch.rpm'
+
+# port on which the Satellite/Capsule serves the katello-ca-consumer RPM (usually 80)
+_def_rts_satellite_katello_ca_consumer_port: 80
+
+# published path (after Satellite/Capsule hostname) of the katello-ca-consumer
+_def_rts_satellite_katello_ca_consumer_published_path: 'pub'
+
+# scheme (http/https) to use when downloading the katello-ca-consumer from the Satellite/Capsule
+_def_rts_satellite_katello_ca_consumer_scheme: 'http'
+
+# whether to verify the HTTPS certificates when downloading the katello-ca-consumer RPM
+# this only makes sense when _rts_satellite_katello_ca_consumer_scheme is 'https'
+_def_rts_satellite_katello_ca_consumer_validate_certificates: false
+
+# port on which the Satellite/Capsule is reachable for subscription-manager registration
+_def_rts_satellite_port: 443
+
+# whether to validate certificates while connecting to Satellite/Capsule for the subscription-manager registration
+_def_rts_satellite_validate_certificates: true
+...

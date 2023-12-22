@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  role_name: 'register_to_satellite'
+  namespace: 'sscheib'
+  author: 'Steffen Scheib'
+  description: 'Registers a system to a Satellite instance using the `katello-ca-consumer`-method.'
+  issue_tracker_url: 'https://github.com/sscheib/ansible-role-register_to_satellite/issues'
+  license: 'GPL-2.0-or-later'
+  min_ansible_version: '2.12'
+  platforms:
+    - name: 'EL'
+      versions:
+        - '8'
+
+  galaxy_tags:
+    - 'rhel'
+    - 'katello'
+    - 'satellite'
+
+dependencies: []
+...

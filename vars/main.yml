@@ -1,0 +1,71 @@
+---
+#
+# mandatory variables
+#
+
+# hostname of Satellite/Capsule to register to and to retrieve the katello-ca-consumer package
+_rts_satellite_hostname: '{{ rts_satellite_hostname | mandatory }}'
+
+# activation key to use to register with the Satellite/Capsule
+_rts_satellite_activation_key: '{{ rts_satellite_activation_key | mandatory }}'
+
+# Satellite Organization name to use for registering with the Satellite/Capsule
+_rts_satellite_organization_name: '{{ rts_satellite_organization_name | mandatory }}'
+
+#
+# optional variables
+#
+
+# whether to force registration, even if the RHSM configuration file points to the correct Satellite/Capsule
+_rts_force_registration: '{{ rts_force_registration | default(_def_rts_force_registration) }}'
+
+# regular expression to find existing katello-ca-consumer packages
+_rts_katello_ca_consumer_regexp: '{{ rts_katello_ca_consumer_regexp | default(_def_rts_katello_ca_consumer_regexp) }}'
+
+# whether to quiet assert statements
+_rts_quiet_assert: '{{ rts_quiet_assert | default(_def_rts_quiet_assert) }}'
+
+# path to the RHSM configuration file
+_rts_rhsm_conf_path: '{{ rts_rhsm_conf_path | default(_def_rts_rhsm_conf_path) }}'
+
+# package name of katello-ca-consumer - required for retrieving the RPM from the Satellite
+_rts_satellite_katello_ca_consumer_package_name: >-
+  {{
+    rts_satellite_katello_ca_consumer_package_name | default(_def_rts_satellite_katello_ca_consumer_package_name)
+  }}
+
+# port on which the Satellite/Capsule serves the katello-ca-consumer RPM (usually 80)
+_rts_satellite_katello_ca_consumer_port: >-
+  {{
+    rts_satellite_katello_ca_consumer_port | default(_def_rts_satellite_katello_ca_consumer_port)
+  }}
+
+# published path (after Satellite/Capsule hostname) of the katello-ca-consumer
+_rts_satellite_katello_ca_consumer_published_path: >-
+  {{
+    rts_satellite_katello_ca_consumer_published_path | default(_def_rts_satellite_katello_ca_consumer_published_path)
+  }}
+
+# scheme (http/https) to use when downloading the katello-ca-consumer from the Satellite/Capsule
+_rts_satellite_katello_ca_consumer_scheme: >-
+  {{
+    rts_satellite_katello_ca_consumer_scheme | default(_def_rts_satellite_katello_ca_consumer_scheme)
+  }}
+
+# whether to verify the HTTPS certificates when downloading the katello-ca-consumer RPM
+# this only makes sense when _rts_satellite_katello_ca_consumer_scheme is 'https'
+_rts_satellite_katello_ca_consumer_validate_certificates: >-
+  {{
+    rts_satellite_katello_ca_consumer_validate_certificates |
+    default(_def_rts_satellite_katello_ca_consumer_validate_certificates)
+  }}
+
+# port on which the Satellite/Capsule is reachable for subscription-manager registration
+_rts_satellite_port: '{{ rts_satellite_port | default(_def_rts_satellite_port) }}'
+
+# whether to validate certificates while connecting to Satellite/Capsule for the subscription-manager registration
+_rts_satellite_validate_certificates: >-
+  {{
+    rts_satellite_validate_certificates | default(_def_rts_satellite_validate_certificates)
+  }}
+...
