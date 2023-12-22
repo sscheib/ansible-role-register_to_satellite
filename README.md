@@ -1,4 +1,4 @@
-[![ansible-lint](https://github.com/sscheib/ansible-role-rhel_iso_kickstart/actions/workflows/ansible-lint.yml/badge.svg?branch=main)](https://github.com/sscheib/ansible-role-rhel_iso_kickstart/actions/workflows/ansible-lint.yml) [![Publish latest release to Ansible Galaxy](https://github.com/sscheib/ansible-role-rhel_iso_kickstart/actions/workflows/ansible-galaxy.yml/badge.svg?branch=main)](https://github.com/sscheib/ansible-role-rhel_iso_kickstart/actions/workflows/ansible-galaxy.yml)
+[![ansible-lint](https://github.com/sscheib/ansible-role-register_to_satellite/actions/workflows/ansible-lint.yml/badge.svg?branch=main)](https://github.com/sscheib/ansible-role-register_to_satellite/actions/workflows/ansible-lint.yml) [![Publish latest release to Ansible Galaxy](https://github.com/sscheib/ansible-role-register_to_satellite/actions/workflows/ansible-galaxy.yml/badge.svg)](https://github.com/sscheib/ansible-role-register_to_satellite/actions/workflows/ansible-galaxy.yml)
 
 register_to_satellite
 =========
