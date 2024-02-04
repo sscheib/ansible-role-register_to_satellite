@@ -80,11 +80,6 @@
         cmd: 'subscription-manager status'
       changed_when: false
 
-    - name: 'register | Refresh subscription-manager data'
-      ansible.builtin.command:
-        cmd: 'subscription-manager refresh'
-      changed_when: false
-
     # both tasks below are required for Satellite to report the installed packages
     - name: 'register | Ensure subscription-manager is able to list repositories'
       ansible.builtin.command:
