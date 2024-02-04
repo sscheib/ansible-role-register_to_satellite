@@ -80,6 +80,11 @@
         cmd: 'subscription-manager status'
       changed_when: false
 
+    - name: 'register | Refresh subscription-manager data'
+      ansible.builtin.command:
+        cmd: 'subscription-manager refresh'
+      changed_when: false
+
     - name: 'register | Ensure the system is able to update the cache of the enabled repositories'
       ansible.builtin.package:
         update_cache: true
